@@ -75,7 +75,6 @@ public class BillboardCubemapDemo {
     Matrix4f viewMatrix = new Matrix4f();
     Matrix4f viewProjMatrix = new Matrix4f();
     Matrix4f invViewProjMatrix = new Matrix4f();
-    FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 
     GLCapabilities caps;
     GLFWErrorCallback errCallback;
@@ -345,12 +344,12 @@ public class BillboardCubemapDemo {
 
         /* Update the background shader */
         glUseProgramObjectARB(backgroundProgram);
-        glUniformMatrix4fvARB(background_invViewProjUniform, false, invViewProjMatrix.get(matrixBuffer));
+        glUniformMatrix4fvARB(background_invViewProjUniform, false, invViewProjMatrix.ms);
         glUniform3fARB(background_cameraPositionUniform, tmp.x, tmp.y, tmp.z);
 
         /* Update the black hole shader */
         glUseProgramObjectARB(blackholeProgram);
-        glUniformMatrix4fvARB(blackhole_viewProjUniform, false, viewProjMatrix.get(matrixBuffer));
+        glUniformMatrix4fvARB(blackhole_viewProjUniform, false, viewProjMatrix.ms);
         glUniform3fARB(blackhole_cameraPositionUniform, tmp.x, tmp.y, tmp.z);
         glUniform3fARB(blackhole_blackholePositionUniform, blackholePosition.x, blackholePosition.y, blackholePosition.z);
         glUniform1fARB(blackhole_blackholeSizeUniform, blackholeSize);

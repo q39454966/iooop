@@ -52,7 +52,6 @@ public class NoVerticesBSplineDemo {
     GLFWFramebufferSizeCallback fbCallback;
     Callback debugProc;
 
-    FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
     Matrix4f transform = new Matrix4f();
     int lod = 10;
     static final int numPoints = 50;
@@ -194,7 +193,7 @@ public class NoVerticesBSplineDemo {
                          0, 1, 0)
                  .rotateY(angle * (float) Math.toRadians(180)); // 180 degrees per second
         // and upload it to the shader
-        glUniformMatrix4fv(transformUniform, false, transform.get(matrixBuffer));
+        glUniformMatrix4fv(transformUniform, false, transform.ms);
         glUniform1i(lodUniform, lod);
         glUniform1i(numPointsUniform, numPoints);
 

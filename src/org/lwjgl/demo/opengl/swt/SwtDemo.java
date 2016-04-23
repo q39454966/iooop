@@ -100,7 +100,7 @@ public class SwtDemo {
 		// Create a simple quad
 		int vbo = glGenBuffers();
 		int ibo = glGenBuffers();
-		float[] vertices = { 
+		float[] positions = { 
 			-1, -1, 0,
 			 1, -1, 0,
 			 1,  1, 0,
@@ -111,14 +111,10 @@ public class SwtDemo {
 			2, 3, 0
 		};
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glBufferData(GL_ARRAY_BUFFER, (FloatBuffer) BufferUtils
-				.createFloatBuffer(vertices.length).put(vertices).flip(),
-				GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, positions, GL_STATIC_DRAW);
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, (IntBuffer) BufferUtils
-				.createIntBuffer(indices.length).put(indices).flip(),
-				GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW);
 		glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0L);
 
 		shell.setSize(800, 600);

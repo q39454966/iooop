@@ -108,7 +108,6 @@ public class TransformFeedbackDemo {
     Vector3f cameraPosition = new Vector3f();
     Vector3f cameraLookAt = new Vector3f(0.0f, 0.0f, 0.0f);
     Vector3f cameraUp = new Vector3f(0.0f, 1.0f, 0.0f);
-    FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 
     GLFWErrorCallback errCallback;
     GLFWKeyCallback keyCallback;
@@ -256,15 +255,15 @@ public class TransformFeedbackDemo {
         int vbo = glGenBuffers();
         glBindVertexArray(fullScreenVao);
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        ByteBuffer bb = BufferUtils.createByteBuffer(4 * 2 * 6);
-        FloatBuffer fv = bb.asFloatBuffer();
-        fv.put(-1.0f).put(-1.0f);
-        fv.put(1.0f).put(-1.0f);
-        fv.put(1.0f).put(1.0f);
-        fv.put(1.0f).put(1.0f);
-        fv.put(-1.0f).put(1.0f);
-        fv.put(-1.0f).put(-1.0f);
-        glBufferData(GL_ARRAY_BUFFER, bb, GL_STATIC_DRAW);
+        float[] positions = {
+            -1, -1,
+             1, -1,
+             1,  1,
+             1,  1,
+            -1,  1,
+            -1, -1
+        };
+        glBufferData(GL_ARRAY_BUFFER, positions, GL_STATIC_DRAW);
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, 0L);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -482,8 +481,8 @@ public class TransformFeedbackDemo {
         glUseProgram(feedbackProgram);
 
         /* Upload model-independent matrices */
-        glUniformMatrix4fv(viewMatrixUniform, false, viewMatrix.get(matrixBuffer));
-        glUniformMatrix4fv(projectionMatrixUniform, false, projMatrix.get(matrixBuffer));
+        glUniformMatrix4fv(viewMatrixUniform, false, viewMatrix.ms);
+        glUniformMatrix4fv(projectionMatrixUniform, false, projMatrix.ms);
 
         /* Bind buffer into which to transform the vertices */
         glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, this.ssbo);
@@ -495,8 +494,8 @@ public class TransformFeedbackDemo {
             /* Compute normal matrix */
             viewMatrix.mulAffine(modelMatrix, modelViewMatrix).normal(normalMatrix);
             /* Update matrices in shader */
-            glUniformMatrix4fv(modelMatrixUniform, false, modelMatrix.get(matrixBuffer));
-            glUniformMatrix3fv(normalMatrixUniform, false, normalMatrix.get(matrixBuffer));
+            glUniformMatrix4fv(modelMatrixUniform, false, modelMatrix.ms);
+            glUniformMatrix3fv(normalMatrixUniform, false, normalMatrix.ms);
             glDrawArrays(GL_TRIANGLES, 0, mesh.numVertices);
         }
         /* Draw second sphere orbiting the first. The second sphere also periodically scales along the Y axis */
@@ -508,8 +507,8 @@ public class TransformFeedbackDemo {
             /* Compute normal matrix */
             viewMatrix.mulAffine(modelMatrix, modelViewMatrix).normal(normalMatrix);
             /* Update matrices in shader */
-            glUniformMatrix4fv(modelMatrixUniform, false, modelMatrix.get(matrixBuffer));
-            glUniformMatrix3fv(normalMatrixUniform, false, normalMatrix.get(matrixBuffer));
+            glUniformMatrix4fv(modelMatrixUniform, false, modelMatrix.ms);
+            glUniformMatrix3fv(normalMatrixUniform, false, normalMatrix.ms);
             glDrawArrays(GL_TRIANGLES, 0, mesh.numVertices);
         }
         glBindVertexArray(0);

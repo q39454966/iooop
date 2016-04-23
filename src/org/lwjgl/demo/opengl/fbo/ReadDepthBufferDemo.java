@@ -78,7 +78,6 @@ public class ReadDepthBufferDemo {
 	private Vector3f tmpVector = new Vector3f();
 	private Vector3f cameraLookAt = new Vector3f(0.0f, 0.5f, 0.0f);
 	private Vector3f cameraUp = new Vector3f(0.0f, 1.0f, 0.0f);
-	private FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 
 	GLFWErrorCallback errCallback;
 	GLFWKeyCallback keyCallback;
@@ -197,15 +196,15 @@ public class ReadDepthBufferDemo {
 	private void createFullScreenVbo() {
 		int vbo = glGenBuffers();
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		ByteBuffer bb = BufferUtils.createByteBuffer(4 * 2 * 6);
-		FloatBuffer fv = bb.asFloatBuffer();
-		fv.put(-1.0f).put(-1.0f);
-		fv.put(1.0f).put(-1.0f);
-		fv.put(1.0f).put(1.0f);
-		fv.put(1.0f).put(1.0f);
-		fv.put(-1.0f).put(1.0f);
-		fv.put(-1.0f).put(-1.0f);
-		glBufferData(GL_ARRAY_BUFFER, bb, GL_STATIC_DRAW);
+        float[] positions = {
+            -1, -1,
+             1, -1,
+             1,  1,
+             1,  1,
+            -1,  1,
+            -1, -1
+        };
+		glBufferData(GL_ARRAY_BUFFER, positions, GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		fullScreenQuadVbo = vbo;
 	}
@@ -332,7 +331,7 @@ public class ReadDepthBufferDemo {
 		glUseProgram(depthOnlyProgram);
 
 		/* Update matrices in shader */
-		glUniformMatrix4fv(viewProjMatrixUniform, false, camera.get(matrixBuffer));
+		glUniformMatrix4fv(viewProjMatrixUniform, false, camera.ms);
 
 		/* Rasterize the boxes into the FBO */
 		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
@@ -351,7 +350,7 @@ public class ReadDepthBufferDemo {
 		glUseProgram(fullScreenQuadProgram);
 
 		/* Set the inverse(proj * view) matrix in the shader */
-		glUniformMatrix4fv(inverseMatrixUniform, false, invCamera.get(matrixBuffer));
+		glUniformMatrix4fv(inverseMatrixUniform, false, invCamera.ms);
 
 		glBindBuffer(GL_ARRAY_BUFFER, fullScreenQuadVbo);
 		glEnableVertexAttribArray(0);

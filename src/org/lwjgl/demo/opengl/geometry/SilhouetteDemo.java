@@ -48,7 +48,6 @@ public class SilhouetteDemo {
     int viewProjMatrixUniform;
 
     Matrix4f viewProjMatrix = new Matrix4f();
-    FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 
     GLCapabilities caps;
     GLFWErrorCallback errCallback;
@@ -217,7 +216,7 @@ public class SilhouetteDemo {
 
     void render() {
         glUseProgram(this.program);
-        glUniformMatrix4fv(viewProjMatrixUniform, false, viewProjMatrix.get(matrixBuffer));
+        glUniformMatrix4fv(viewProjMatrixUniform, false, viewProjMatrix.ms);
         glDrawElements(GL_TRIANGLES_ADJACENCY_EXT, 6 * 2 * 6, GL_UNSIGNED_INT, 0L);
         glUseProgram(0);
     }

@@ -11,10 +11,8 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.io.IOException;
-import java.nio.FloatBuffer;
 
 import org.joml.Matrix3f;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
@@ -45,7 +43,6 @@ public class NoVerticesPolygonDemo {
     GLFWFramebufferSizeCallback fbCallback;
     Callback debugProc;
 
-    FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(9);
     Matrix3f transform = new Matrix3f();
     int count = 5; // <- must be at least 3
 
@@ -162,7 +159,7 @@ public class NoVerticesPolygonDemo {
                  .rotateZ(angle) // rotate 0.1 radians/sec.
                  .scale(0.5f); // make everything a bit smaller
         // and upload it to the shader
-        glUniformMatrix3fv(transformUniform, false, transform.get(matrixBuffer));
+        glUniformMatrix3fv(transformUniform, false, transform.ms);
         glUniform1i(countUniform, count);
 
         glDrawArrays(GL_TRIANGLE_FAN, 0, 2 + count);

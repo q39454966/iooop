@@ -12,10 +12,8 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.io.IOException;
-import java.nio.FloatBuffer;
 
 import org.joml.Matrix4f;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
@@ -45,7 +43,6 @@ public class NoVerticesGridDemo {
     GLFWFramebufferSizeCallback fbCallback;
     Callback debugProc;
 
-    FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
     Matrix4f transform = new Matrix4f();
     int sizeX = 10;
     int sizeY = 10;
@@ -168,7 +165,7 @@ public class NoVerticesGridDemo {
                  .lookAt(0, 1, 2, 0, 0, 0, 0, 1, 0)
                  .rotateY(angle * (float) Math.toRadians(30)); // 30 degrees per second
         // and upload it to the shader
-        glUniformMatrix4fv(transformUniform, false, transform.get(matrixBuffer));
+        glUniformMatrix4fv(transformUniform, false, transform.ms);
         glUniform2i(sizeUniform, sizeX, sizeY);
 
         glDrawArrays(GL_TRIANGLES, 0, 6 * sizeX * sizeY);

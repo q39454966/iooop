@@ -12,11 +12,9 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.io.IOException;
-import java.nio.FloatBuffer;
 
 import org.joml.Matrix4f;
 import org.joml.Vector4f;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
@@ -54,7 +52,6 @@ public class NoVerticesProjectedGridDemo {
     GLFWFramebufferSizeCallback fbCallback;
     Callback debugProc;
 
-    FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
     Matrix4f view = new Matrix4f();
     Matrix4f proj = new Matrix4f();
     Matrix4f viewproj = new Matrix4f();
@@ -204,7 +201,7 @@ public class NoVerticesProjectedGridDemo {
             glUniform4f(intersectionsUniform+i, isect.x, isect.y, isect.z, isect.w);
         }
         // upload matrices to the shader
-        glUniformMatrix4fv(transformUniform, false, viewproj.get(matrixBuffer));
+        glUniformMatrix4fv(transformUniform, false, viewproj.ms);
         glUniform1f(timeUniform, alpha);
         glUniform2i(sizeUniform, sizeX, sizeY);
 

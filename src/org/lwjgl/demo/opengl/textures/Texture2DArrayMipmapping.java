@@ -39,7 +39,6 @@ public class Texture2DArrayMipmapping {
 	private int viewProjMatrixUniform;
 
 	private Matrix4f viewProjMatrix = new Matrix4f();
-	private FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 
 	GLCapabilities caps;
 	GLFWErrorCallback errCallback;
@@ -166,15 +165,15 @@ public class Texture2DArrayMipmapping {
 		int vbo = glGenBuffers();
 		glBindVertexArray(vao);
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		ByteBuffer bb = BufferUtils.createByteBuffer(4 * 2 * 6);
-		FloatBuffer fv = bb.asFloatBuffer();
-		fv.put(-1.0f).put(-1.0f);
-		fv.put(1.0f).put(-1.0f);
-		fv.put(1.0f).put(1.0f);
-		fv.put(1.0f).put(1.0f);
-		fv.put(-1.0f).put(1.0f);
-		fv.put(-1.0f).put(-1.0f);
-		glBufferData(GL_ARRAY_BUFFER, bb, GL_STATIC_DRAW);
+		float[] positions = {
+            -1, -1,
+             1, -1,
+             1,  1,
+             1,  1,
+            -1,  1,
+            -1, -1
+        };
+        glBufferData(GL_ARRAY_BUFFER, positions, GL_STATIC_DRAW);
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, 0L);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -225,7 +224,7 @@ public class Texture2DArrayMipmapping {
 	private void render() {
 		glUseProgram(this.program);
 
-		glUniformMatrix4fv(viewProjMatrixUniform, false, viewProjMatrix.get(matrixBuffer));
+		glUniformMatrix4fv(viewProjMatrixUniform, false, viewProjMatrix.ms);
 
 		glBindVertexArray(vao);
 		glBindTexture(GL_TEXTURE_2D_ARRAY, tex);

@@ -111,13 +111,13 @@ public class SimpleDrawElements {
 
         int vbo = glGenBuffers();
         int ibo = glGenBuffers();
-        float[] vertices = {-0.5f, -0.5f, 0.5f, -0.5f, 0.5f, 0.5f};
+        float[] positions = {-0.5f, -0.5f, 0.5f, -0.5f, 0.5f, 0.5f};
         int[] indices = {0, 1, 2};
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBufferData(GL_ARRAY_BUFFER, (FloatBuffer) BufferUtils.createFloatBuffer(vertices.length).put(vertices).flip(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, positions, GL_STATIC_DRAW);
         glEnableClientState(GL_VERTEX_ARRAY);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, (IntBuffer) BufferUtils.createIntBuffer(indices.length).put(indices).flip(), GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW);
         glVertexPointer(2, GL_FLOAT, 0, 0L);
 
         // Run the rendering loop until the user has attempted to close

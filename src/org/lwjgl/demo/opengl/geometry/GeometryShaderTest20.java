@@ -39,7 +39,6 @@ public class GeometryShaderTest20 {
 
 	Matrix4f viewMatrix = new Matrix4f();
 	Matrix4f projMatrix = new Matrix4f();
-	FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 
 	GLCapabilities caps;
 	GLFWErrorCallback errCallback;
@@ -243,8 +242,8 @@ public class GeometryShaderTest20 {
 	void render() {
 		glUseProgram(this.program);
 
-		glUniformMatrix4fv(viewMatrixUniform, false, viewMatrix.get(matrixBuffer));
-		glUniformMatrix4fv(projMatrixUniform, false, projMatrix.get(matrixBuffer));
+		glUniformMatrix4fv(viewMatrixUniform, false, viewMatrix.ms);
+		glUniformMatrix4fv(projMatrixUniform, false, projMatrix.ms);
 		glUniform2f(viewportSizeUniform, width, height);
 
 		glDrawArrays(GL_TRIANGLES, 0, 3 * 2 * 6);

@@ -187,7 +187,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.joml</groupId>
-			<artifactId>joml</artifactId>
+			<artifactId>joml-array</artifactId>
 			<version>${joml.version}</version>
 		</dependency>
 		<dependency>

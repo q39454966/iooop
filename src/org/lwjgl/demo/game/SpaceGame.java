@@ -210,7 +210,6 @@ public class SpaceGame {
     private Matrix4f viewProjMatrix = new Matrix4f();
     private Matrix4f invViewMatrix = new Matrix4f();
     private Matrix4f invViewProjMatrix = new Matrix4f();
-    private FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
     private FrustumIntersection frustumIntersection = new FrustumIntersection();
 
     private GLCapabilities caps;
@@ -488,20 +487,20 @@ public class SpaceGame {
 
         /* Update the background shader */
         glUseProgram(cubemapProgram);
-        glUniformMatrix4fv(cubemap_invViewProjUniform, false, invViewProjMatrix.get(matrixBuffer));
+        glUniformMatrix4fv(cubemap_invViewProjUniform, false, invViewProjMatrix.ms);
 
         /* Update the ship shader */
         glUseProgram(shipProgram);
-        glUniformMatrix4fv(ship_viewUniform, false, viewMatrix.get(matrixBuffer));
-        glUniformMatrix4fv(ship_projUniform, false, projMatrix.get(matrixBuffer));
+        glUniformMatrix4fv(ship_viewUniform, false, viewMatrix.ms);
+        glUniformMatrix4fv(ship_projUniform, false, projMatrix.ms);
 
         /* Update the shot shader */
         glUseProgram(shotProgram);
-        glUniformMatrix4fv(shot_projUniform, false, matrixBuffer);
+        glUniformMatrix4fv(shot_projUniform, false, projMatrix.ms);
 
         /* Update the particle shader */
         glUseProgram(particleProgram);
-        glUniformMatrix4fv(particle_projUniform, false, matrixBuffer);
+        glUniformMatrix4fv(particle_projUniform, false, projMatrix.ms);
 
         updateControls();
 
@@ -645,7 +644,7 @@ public class SpaceGame {
             if (frustumIntersection.testSphere(x, y, z, shipRadius)) {
                 modelMatrix.translation(x, y, z);
                 modelMatrix.scale(shipRadius);
-                glUniformMatrix4fv(ship_modelUniform, false, modelMatrix.get(matrixBuffer));
+                glUniformMatrix4fv(ship_modelUniform, false, modelMatrix.ms);
                 glDrawArrays(GL_TRIANGLES, 0, this.ship.numVertices);
             }
         }
@@ -670,7 +669,7 @@ public class SpaceGame {
             if (frustumIntersection.testSphere(x, y, z, asteroid.scale)) {
                 modelMatrix.translation(x, y, z);
                 modelMatrix.scale(asteroid.scale);
-                glUniformMatrix4fv(ship_modelUniform, false, modelMatrix.get(matrixBuffer));
+                glUniformMatrix4fv(ship_modelUniform, false, modelMatrix.ms);
                 glDrawArrays(GL_TRIANGLES, 0, this.asteroid.numVertices);
             }
         }
@@ -765,12 +764,12 @@ public class SpaceGame {
         glNormalPointer(GL_FLOAT, 0, sphere.normals);
         glMatrixMode(GL_PROJECTION);
         glPushMatrix();
-        glLoadMatrixf(projMatrix.get(matrixBuffer));
+        glLoadMatrixf(projMatrix.ms);
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         glLoadIdentity();
         glTranslatef(0, -1, -4);
-        glMultMatrixf(viewMatrix.get(matrixBuffer));
+        glMultMatrixf(viewMatrix.ms);
         glScalef(0.3f, 0.3f, 0.3f);
         glColor4f(0.1f, 0.1f, 0.1f, 0.2f);
         glDisable(GL_DEPTH_TEST);

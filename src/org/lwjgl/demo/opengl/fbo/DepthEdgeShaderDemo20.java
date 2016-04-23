@@ -72,7 +72,6 @@ public class DepthEdgeShaderDemo20 {
     Matrix4f projMatrix = new Matrix4f();
     Matrix4f invMatrix = new Matrix4f();
     Matrix3f normalMatrix = new Matrix3f();
-    FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
     boolean showEdge = true;
 
     GLCapabilities caps;
@@ -206,17 +205,17 @@ public class DepthEdgeShaderDemo20 {
     }
 
     void createQuad() {
-        FloatBuffer pb = BufferUtils.createFloatBuffer(2 * 6);
-        pb.put(-1).put(-1);
-        pb.put( 1).put(-1);
-        pb.put( 1).put( 1);
-        pb.put( 1).put( 1);
-        pb.put(-1).put( 1);
-        pb.put(-1).put(-1);
-        pb.flip();
+        float[] positions = {
+            -1, -1,
+             1, -1,
+             1,  1,
+             1,  1,
+            -1,  1,
+            -1, -1
+        };
         this.quadVbo = glGenBuffers();
         glBindBuffer(GL_ARRAY_BUFFER, this.quadVbo);
-        glBufferData(GL_ARRAY_BUFFER, pb, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, positions, GL_STATIC_DRAW);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
@@ -323,9 +322,9 @@ public class DepthEdgeShaderDemo20 {
         glEnable(GL_DEPTH_TEST);
         glUseProgram(this.normalProgram);
 
-        glUniformMatrix4fv(viewMatrixUniform, false, viewMatrix.get(matrixBuffer));
-        glUniformMatrix4fv(projMatrixUniform, false, projMatrix.get(matrixBuffer));
-        glUniformMatrix3fv(normalMatrixUniform, false, normalMatrix.get(matrixBuffer));
+        glUniformMatrix4fv(viewMatrixUniform, false, viewMatrix.ms);
+        glUniformMatrix4fv(projMatrixUniform, false, projMatrix.ms);
+        glUniformMatrix3fv(normalMatrixUniform, false, normalMatrix.ms);
 
         glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -354,7 +353,7 @@ public class DepthEdgeShaderDemo20 {
 
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glUniformMatrix4fv(inverseMatrixUniform, false, invMatrix.get(matrixBuffer));
+        glUniformMatrix4fv(inverseMatrixUniform, false, invMatrix.ms);
         glUniform1f(invWidthUniform, 1.0f / width);
         glUniform1f(invHeightUniform, 1.0f / height);
         glUniform1i(normalTexUniform, 0);

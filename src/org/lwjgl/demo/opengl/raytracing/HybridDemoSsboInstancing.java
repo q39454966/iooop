@@ -97,7 +97,6 @@ public class HybridDemoSsboInstancing {
 	private Vector3f cameraPosition = new Vector3f();
 	private Vector3f cameraLookAt = new Vector3f(0.0f, 0.5f, 0.0f);
 	private Vector3f cameraUp = new Vector3f(0.0f, 1.0f, 0.0f);
-	private FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 
 	GLFWErrorCallback errCallback;
 	GLFWKeyCallback keyCallback;
@@ -283,15 +282,15 @@ public class HybridDemoSsboInstancing {
 		int vbo = glGenBuffers();
 		glBindVertexArray(vao);
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		ByteBuffer bb = BufferUtils.createByteBuffer(4 * 2 * 6);
-		FloatBuffer fv = bb.asFloatBuffer();
-		fv.put(-1.0f).put(-1.0f);
-		fv.put(1.0f).put(-1.0f);
-		fv.put(1.0f).put(1.0f);
-		fv.put(1.0f).put(1.0f);
-		fv.put(-1.0f).put(1.0f);
-		fv.put(-1.0f).put(-1.0f);
-		glBufferData(GL_ARRAY_BUFFER, bb, GL_STATIC_DRAW);
+		float[] positions = {
+            -1, -1,
+             1, -1,
+             1,  1,
+             1,  1,
+            -1,  1,
+            -1, -1
+        };
+        glBufferData(GL_ARRAY_BUFFER, positions, GL_STATIC_DRAW);
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, 0L);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -583,8 +582,8 @@ public class HybridDemoSsboInstancing {
 		glUseProgram(rasterProgram);
 
 		/* Update matrices in shader */
-		glUniformMatrix4fv(viewMatrixUniform, false, viewMatrix.get(matrixBuffer));
-		glUniformMatrix4fv(projectionMatrixUniform, false, projMatrix.get(matrixBuffer));
+		glUniformMatrix4fv(viewMatrixUniform, false, viewMatrix.ms);
+		glUniformMatrix4fv(projectionMatrixUniform, false, projMatrix.ms);
 
 		/* Rasterize the boxes into the FBO */
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
