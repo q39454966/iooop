@@ -15,11 +15,9 @@ import static org.lwjgl.opengl.EXTFramebufferBlit.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.io.IOException;
-import java.nio.FloatBuffer;
 
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.demo.opengl.util.WavefrontMeshLoader;
 import org.lwjgl.demo.opengl.util.WavefrontMeshLoader.Mesh;
 import org.lwjgl.glfw.GLFWErrorCallback;
